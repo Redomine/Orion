@@ -14,21 +14,49 @@ var SOCKET_LIST = {};
 
 var io = require('socket.io')(serv,{});
 
+var Player = function(id) {
+    var self = {
+        id:id,
+        number:""+Math.floor (10 * Math.random())
+    }
+    
+    Player.list[id] = self;
+	return self;
+}
+
+Player.list = {};
+
+Player.onConnect = function(socket){
+    var player = Player(socket.id);
+}
+
+Player.onDisconnect = function(socket){
+	delete Player.list[socket.id];
+}
+
 io.sockets.on('connection', function(socket){
     console.log('socket connected');
 
     socket.id = Math.random();
-    socket.x = 0;
-    socket.y = 0;
+    socket.x = 250;
+    socket.y = 250;
     SOCKET_LIST[socket.id] = socket;
+
+    socket.on('signIn', function(data){
+        if(data.username === '' && data.password === ''){
+            Player.onConnect(socket);
+            socket.emit('signInResponse', {success:true});
+        } else {
+            socket.emit('signInResponse', {success:false});
+        }
+    });
 
 });
 
 setInterval(function() {
     for(var i in SOCKET_LIST){
       var socket = SOCKET_LIST[i]
-      socket.x++
-      socket.y++
+
       
       socket.emit('newPosition', {
           x:socket.x,
