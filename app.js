@@ -15,12 +15,18 @@ con.connect(function(err) {
     console.log("Connected to database");
 });
 
+
+star_systems = []
 let stars = "SELECT * FROM stars";
 let stars_querry = con.query(stars, (err, results) => {
     if(err) throw err;
-    console.log(results);
+    for (i in results) {
+        star_systems[i] = results[i];
+    }
+
 })
 
+console.log(star_systems);
 
 app.get('/',function(req, res) {
     res.sendFile(__dirname + '/client/index.html');
