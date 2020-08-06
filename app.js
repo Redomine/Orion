@@ -1,6 +1,26 @@
 var express = require('express');
 var app = express();
 var serv = require('http').Server(app);
+var mysql = require('mysql');
+
+const con = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    database:'orion',
+    password: '7M8Eh56d'
+});
+
+con.connect(function(err) {
+    if (err) throw err;
+    console.log("Connected to database");
+});
+
+let stars = "SELECT * FROM stars";
+let stars_querry = con.query(stars, (err, results) => {
+    if(err) throw err;
+    console.log(results);
+})
+
 
 app.get('/',function(req, res) {
     res.sendFile(__dirname + '/client/index.html');
