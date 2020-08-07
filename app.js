@@ -16,17 +16,19 @@ con.connect(function(err) {
 });
 
 
-star_systems = []
+star_systems = {};
 let stars = "SELECT * FROM stars";
 let stars_querry = con.query(stars, (err, results) => {
     if(err) throw err;
     for (i in results) {
-        star_systems[i] = results[i];
+        
+        star_systems[i] = [results[i].idPlanets, 
+        results[i].Star_name, 
+        results[i].Star_type,
+        results[i].Star_x,
+        results[i].Star_y];
     }
-
 })
-
-console.log(star_systems);
 
 app.get('/',function(req, res) {
     res.sendFile(__dirname + '/client/index.html');
@@ -40,26 +42,6 @@ var SOCKET_LIST = {};
 
 var io = require('socket.io')(serv,{});
 
-var Player = function(id) {
-    var self = {
-        id:id,
-        number:""+Math.floor (10 * Math.random())
-    }
-    
-    Player.list[id] = self;
-	return self;
-}
-
-Player.list = {};
-
-Player.onConnect = function(socket){
-    var player = Player(socket.id);
-}
-
-Player.onDisconnect = function(socket){
-	delete Player.list[socket.id];
-}
-
 io.sockets.on('connection', function(socket){
     console.log('socket connected');
 
@@ -68,14 +50,6 @@ io.sockets.on('connection', function(socket){
     socket.y = 250;
     SOCKET_LIST[socket.id] = socket;
 
-    socket.on('signIn', function(data){
-        if(data.username === '' && data.password === ''){
-            Player.onConnect(socket);
-            socket.emit('signInResponse', {success:true});
-        } else {
-            socket.emit('signInResponse', {success:false});
-        }
-    });
 
 });
 
@@ -90,3 +64,4 @@ setInterval(function() {
       })
     }
 }, 100/25)
+
