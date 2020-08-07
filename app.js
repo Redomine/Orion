@@ -62,6 +62,10 @@ setInterval(function() {
           x:socket.x,
           y:socket.y
       })
+
+      socket.emit('render_map', {
+        star_systems
+    })
     }
 }, 100/25)
 

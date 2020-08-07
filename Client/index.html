@@ -16,8 +16,11 @@
 
     ctx.font = '30px Arial';
 
-    socket.on('newPosition', function(data){
+    socket.on('render_map', function(data){
         ctx.clearRect(0,0,500,500);
-        ctx.fillText('o',data.x,data.y);
-    })
+		for (i in data.star_systems) {
+			ctx.fillText('o',data.star_systems[i][3],data.star_systems[i][4]);
+		}
+	})
+	
 </script>
