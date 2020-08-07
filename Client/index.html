@@ -6,20 +6,38 @@
 
 
 <div id="gameDiv">
-    <canvas id="ctx" width="500" height="500" style="border:1px solid #000000;"></canvas>
+    <canvas id="ctx" width="800" height="800" style="border:1px solid #000000;"></canvas>
 </div>
 
 <script>
     var ctx = document.getElementById("ctx").getContext("2d");
-    var socket = io();
+	var socket = io();
 
+	var img = {};
+	
+	img.star = new Image();
 
-    ctx.font = '30px Arial';
+	//img.red_star = new Image();
+	//img.red_star.src = 'client/img/red_star.png';
+	//img.blue_star = new Image();
+	//img.blue_star.src = 'client/img/blue_star.png';
+	//img.yellow_star = new Image();
+	//img.yellow_star.src = 'client/img/yellow_star.png';
+	img.space = new Image();
+	img.space.src = 'client/img/space.png';
 
+	ctx.font = '12px Arial';
+	ctx.fillStyle = "white";
     socket.on('render_map', function(data){
-        ctx.clearRect(0,0,500,500);
+		ctx.clearRect(0,0,800,800);
+		ctx.drawImage(img.space,
+				0,0);
 		for (i in data.star_systems) {
-			ctx.fillText('o',data.star_systems[i][3],data.star_systems[i][4]);
+			img.star.src = data.star_systems[i][2];	
+			
+			ctx.drawImage(img.star,data.star_systems[i][3],data.star_systems[i][4]);
+			console.log(data.star_systems[i][2]);
+			ctx.fillText(data.star_systems[i][1], data.star_systems[i][3],data.star_systems[i][4]+28);
 		}
 	})
 	

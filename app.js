@@ -46,8 +46,6 @@ io.sockets.on('connection', function(socket){
     console.log('socket connected');
 
     socket.id = Math.random();
-    socket.x = 250;
-    socket.y = 250;
     SOCKET_LIST[socket.id] = socket;
 
 
@@ -57,11 +55,6 @@ setInterval(function() {
     for(var i in SOCKET_LIST){
       var socket = SOCKET_LIST[i]
 
-      
-      socket.emit('newPosition', {
-          x:socket.x,
-          y:socket.y
-      })
 
       socket.emit('render_map', {
         star_systems
