@@ -60,5 +60,5 @@ setInterval(function() {
         star_systems
     })
     }
-}, 100/25)
+}, 100/100)
 

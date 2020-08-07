@@ -15,7 +15,7 @@
 
 	var img = {};
 	
-	img.star = new Image();
+	
 
 	//img.red_star = new Image();
 	//img.red_star.src = 'client/img/red_star.png';
@@ -30,14 +30,12 @@
 	ctx.fillStyle = "white";
     socket.on('render_map', function(data){
 		ctx.clearRect(0,0,800,800);
-		ctx.drawImage(img.space,
-				0,0);
+		ctx.drawImage(img.space,0,0);
 		for (i in data.star_systems) {
+			img.star = new Image();
 			img.star.src = data.star_systems[i][2];	
-			
-			ctx.drawImage(img.star,data.star_systems[i][3],data.star_systems[i][4]);
-			console.log(data.star_systems[i][2]);
-			ctx.fillText(data.star_systems[i][1], data.star_systems[i][3],data.star_systems[i][4]+28);
+			ctx.drawImage(img.star,data.star_systems[i][3],data.star_systems[i][4]);	
+			ctx.fillText(data.star_systems[i][1], data.star_systems[i][3],data.star_systems[i][4]+30);
 		}
 	})
 	
