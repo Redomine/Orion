@@ -10,19 +10,13 @@
 </div>
 
 <script>
+	var gameField = document.getElementById("ctx");
     var ctx = document.getElementById("ctx").getContext("2d");
 	var socket = io();
 
-	var img = {};
-	
-	
+	gameField.addEventListener('mousedown' ,onDown, false);
 
-	//img.red_star = new Image();
-	//img.red_star.src = 'client/img/red_star.png';
-	//img.blue_star = new Image();
-	//img.blue_star.src = 'client/img/blue_star.png';
-	//img.yellow_star = new Image();
-	//img.yellow_star.src = 'client/img/yellow_star.png';
+	var img = {};
 	img.space = new Image();
 	img.space.src = 'client/img/space.png';
 
@@ -38,5 +32,12 @@
 			ctx.fillText(data.star_systems[i][1], data.star_systems[i][3],data.star_systems[i][4]+30);
 		}
 	})
+
+	function onDown(event) {
+		cx = event.pageX;
+		cy = event.pageY;
+		console.log(cx);
+		console.log(cy);
+	}
 	
 </script>
