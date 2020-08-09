@@ -49,7 +49,9 @@ io.sockets.on('connection', function(socket){
 
     socket.id = Math.random();
     SOCKET_LIST[socket.id] = socket;
-
+    socket.emit('get_star_name', {
+        star_systems
+    });
 
 });
 
