@@ -26,14 +26,16 @@ let stars_querry = con.query(stars, (err, results) => {
         results[i].Star_name, 
         results[i].Star_type,
         results[i].Star_x,
-        results[i].Star_y];
+        results[i].Star_y,
+        results[i].Star_size];
     }
 })
 
 app.get('/',function(req, res) {
     res.sendFile(__dirname + '/client/index.html');
 });
-app.use('/client', express.static(__dirname + '/client'));
+
+app.use(express.static(__dirname + '/client'));
 
 serv.listen(2000);
 console.log("Server started.");
@@ -51,10 +53,11 @@ io.sockets.on('connection', function(socket){
 
 });
 
+
+
 setInterval(function() {
     for(var i in SOCKET_LIST){
       var socket = SOCKET_LIST[i]
-
 
       socket.emit('render_map', {
         star_systems

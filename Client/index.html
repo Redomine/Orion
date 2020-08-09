@@ -1,5 +1,4 @@
-
-
+<link href="/assets/styles.css"/>
 
 <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
 
@@ -18,7 +17,7 @@
 
 	var img = {};
 	img.space = new Image();
-	img.space.src = 'client/img/space.png';
+	img.space.src = '/img/space.png';
 
 	ctx.font = '12px Arial';
 	ctx.fillStyle = "white";
@@ -28,8 +27,11 @@
 		for (i in data.star_systems) {
 			img.star = new Image();
 			img.star.src = data.star_systems[i][2];	
-			ctx.drawImage(img.star,data.star_systems[i][3],data.star_systems[i][4]);	
-			ctx.fillText(data.star_systems[i][1], data.star_systems[i][3],data.star_systems[i][4]+30);
+			star_size = data.star_systems[i][5];
+			star_x = data.star_systems[i][3]
+			star_y = data.star_systems[i][4]
+			ctx.drawImage(img.star,star_x,star_y, star_size, star_size);	
+			ctx.fillText(data.star_systems[i][1], star_x,star_y+30);
 		}
 	})
 
@@ -39,5 +41,5 @@
 		console.log(cx);
 		console.log(cy);
 	}
-	
+
 </script>
