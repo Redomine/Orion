@@ -13,7 +13,7 @@
     var ctx = document.getElementById("ctx").getContext("2d");
 	var socket = io();
 
-	gameField.addEventListener('mousedown' ,onDown, false);
+	
 
 	var img = {};
 	img.space = new Image();
@@ -24,22 +24,35 @@
     socket.on('render_map', function(data){
 		ctx.clearRect(0,0,800,800);
 		ctx.drawImage(img.space,0,0);
+		gameField.addEventListener('mousedown' ,onDown, false);
 		for (i in data.star_systems) {
 			img.star = new Image();
 			img.star.src = data.star_systems[i][2];	
 			star_size = data.star_systems[i][5];
-			star_x = data.star_systems[i][3]
-			star_y = data.star_systems[i][4]
+			star_x = data.star_systems[i][3];
+			star_y = data.star_systems[i][4];
+			star_name = data.star_systems[i][1];
 			ctx.drawImage(img.star,star_x,star_y, star_size, star_size);	
-			ctx.fillText(data.star_systems[i][1], star_x,star_y+30);
+			ctx.fillText(star_name, star_x,star_y+30);
+		}
+
+		function onDown(event) {
+				cx = event.pageX;
+				cy = event.pageY;
+
+				for (i in data.star_systems) {
+					star_x = data.star_systems[i][3]
+					star_y = data.star_systems[i][4]
+					star_name = data.star_systems[i][1];
+
+					if ((cx <= star_x + 20 && cx >= star_x -20) && (cy <= star_y + 20 && cy >= star_y -20)){
+						console.log(star_name);
+						break
+					} 
+				};
 		}
 	})
 
-	function onDown(event) {
-		cx = event.pageX;
-		cy = event.pageY;
-		console.log(cx);
-		console.log(cy);
-	}
+
 
 </script>
