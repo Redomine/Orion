@@ -1,0 +1,19 @@
+*{
+    font-family: Areal;
+}
+
+.planets-popup{
+    margin-left: -50px;
+    width:100%;
+    top:0px;
+}
+.planets-popup .planets-popup-content{
+    margin-left: 320px;
+    margin-top: 20px; 
+    width:500px;
+    height:350px;
+    padding:10px;
+    background-color: #c5c5c5;
+    border-radius:5px;
+}
+
