@@ -5,7 +5,7 @@
 
 
 <div class="gameDiv" id="gameDiv" >
-	<canvas id="ctx" width="800" height="800" style="border:1px solid #000000;"></canvas>
+	<canvas id="ctx" width="1200" height="700" style="border:1px solid #000000;"></canvas>
 	<button id="close-planets" style="display:none;" >Close</button>
 </div>
 
@@ -37,7 +37,7 @@
 			ctx.drawImage(img.space,0,0);
 			for (i in data.star_systems) {
 				img.star = new Image();
-				img.star.src = data.star_systems[i][2];	
+				img.star.src = '/img' + '/stars' + data.star_systems[i][2];	
 				star_size = data.star_systems[i][5];
 				star_x = data.star_systems[i][3];
 				star_y = data.star_systems[i][4];
@@ -49,12 +49,19 @@
 
 		if (render_mode === "star_system") {
 			ctx.drawImage(img.space,0,0);
+			for (i in data.star_systems) {
+				if (data.star_systems[i][0] === system_to_render) {
+					img.star = new Image();
+					img.star.src = '/img' + '/close_stars' + data.star_systems[i][2];	
+					ctx.drawImage(img.star,500,300);
+					console.log(img.star.src);
+				}
+			
+			};
+			
 		}
 
 	})
-
-
-
 
 	closePlanetsButton.onclick = function(){
 		render_mode = "map";
@@ -70,11 +77,17 @@
 			for (i in data.star_systems){
 				star_x = data.star_systems[i][3]
 				star_y = data.star_systems[i][4]
-				star_name = data.star_systems[i][1];
+				star_id = data.star_systems[i][0]
+				
+				star_name = data.star_systems[i][0];
 				if ((cx <= star_x + 20 && cx >= star_x - 20) && (cy <= star_y + 20 && cy >= star_y -20)){
-					console.log(star_name);
+					
 					render_mode = "star_system";
 					closePlanetsButton.style.display = 'inline-block';
+					system_to_render = star_id
+					console.log(star_name);
+					console.log(system_to_render);
+
 				}
 			}
 		}

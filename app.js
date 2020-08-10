@@ -22,12 +22,13 @@ let stars_querry = con.query(stars, (err, results) => {
     if(err) throw err;
     for (i in results) {
         
-        star_systems[i] = [results[i].idPlanets, 
+        star_systems[i] = [results[i].Star_id, 
         results[i].Star_name, 
         results[i].Star_type,
         results[i].Star_x,
         results[i].Star_y,
-        results[i].Star_size];
+        results[i].Star_size,
+        ];
     }
 })
 
@@ -60,7 +61,7 @@ io.sockets.on('connection', function(socket){
 setInterval(function() {
     for(var i in SOCKET_LIST){
       var socket = SOCKET_LIST[i]
-      
+
       socket.emit('render_map', {
         star_systems
     })
