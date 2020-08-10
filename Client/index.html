@@ -5,7 +5,8 @@
 
 
 <div class="gameDiv" id="gameDiv" >
-    <canvas id="ctx" width="800" height="800" style="border:1px solid #000000;"></canvas>
+	<canvas id="ctx" width="800" height="800" style="border:1px solid #000000;"></canvas>
+	<button id="close-planets" style="display:none;" >Close</button>
 </div>
 
 <div class="planets-popup">
@@ -18,7 +19,8 @@
 <script>
 	var gameField = document.getElementById("ctx");
 	var planetDiv = document.getElementById("planetDiv");
-    var ctx = document.getElementById("ctx").getContext("2d");
+	var ctx = document.getElementById("ctx").getContext("2d");
+	var closePlanetsButton = document.getElementById("close-planets");
 	var socket = io();
 
 	var img = {};
@@ -27,7 +29,7 @@
 
 	ctx.font = '12px Arial';
 	ctx.fillStyle = "white";
-	var render_mode = "map"
+	var render_mode = "map";
     socket.on('render_map', function(data){
 		ctx.clearRect(0,0,800,800);
 
@@ -54,6 +56,11 @@
 
 
 
+	closePlanetsButton.onclick = function(){
+		render_mode = "map";
+		closePlanetsButton.style.display = 'none';
+	}
+
 	socket.on('get_star_name', function(data){
 		gameField.addEventListener('mousedown' ,onDown, false);
 		function onDown(event) {
@@ -67,7 +74,7 @@
 				if ((cx <= star_x + 20 && cx >= star_x - 20) && (cy <= star_y + 20 && cy >= star_y -20)){
 					console.log(star_name);
 					render_mode = "star_system";
-					
+					closePlanetsButton.style.display = 'inline-block';
 				}
 			}
 		}
