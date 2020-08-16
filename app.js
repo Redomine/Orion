@@ -2,6 +2,8 @@ var express = require('express');
 var app = express();
 var serv = require('http').Server(app);
 var mysql = require('mysql');
+var http = require('http').createServer(app);
+var io = require('socket.io')(http);
 
 const con = mysql.createConnection({
     host: 'localhost',
@@ -28,6 +30,24 @@ let stars_querry = con.query(stars, (err, results) => {
         results[i].Star_x,
         results[i].Star_y,
         results[i].Star_size,
+        ];
+    }
+})
+
+planets = {};
+let planets_data = "SELECT * FROM planets";
+let planets_querry = con.query(planets_data, (err, results) => {
+    if(err) throw err;
+    for (i in results) {
+        planets[i] = [results[i].Planet_id, 
+        results[i].Planet_name, 
+        results[i].Planet_type,
+        results[i].Planet_star_id,
+        results[i].Planet_size,
+        results[i].Planet_rich,
+        results[i].Planet_gravity,
+        results[i].Planet_x,
+        results[i].Planet_y,
         ];
     }
 })
@@ -63,8 +83,8 @@ setInterval(function() {
       var socket = SOCKET_LIST[i]
 
       socket.emit('render_map', {
-        star_systems
+        star_systems, planets
     })
     }
-}, 100/100)
+}, 100/1000)
 

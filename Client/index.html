@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="/assets/styles.css" type="text/css" />
 
-<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
 
 
 
@@ -56,7 +56,13 @@
 					ctx.drawImage(img.star,500,300);
 					console.log(img.star.src);
 				}
-			
+			for (i in data.planets) {
+				if (data.planets[i][3] === system_to_render) {
+					img.planet = new Image();
+					img.planet.src = '/img' + '/planets' + data.planets[i][2];
+					ctx.drawImage(img.planet, data.planets[i][7], data.planets[i][8])
+				}
+			}
 			};
 			
 		}
@@ -73,7 +79,6 @@
 		function onDown(event) {
 			cx = event.pageX;
 			cy = event.pageY;
-			console.log(render_mode);
 			for (i in data.star_systems){
 				star_x = data.star_systems[i][3]
 				star_y = data.star_systems[i][4]
@@ -85,9 +90,6 @@
 					render_mode = "star_system";
 					closePlanetsButton.style.display = 'inline-block';
 					system_to_render = star_id
-					console.log(star_name);
-					console.log(system_to_render);
-
 				}
 			}
 		}
