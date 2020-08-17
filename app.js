@@ -86,5 +86,5 @@ setInterval(function() {
         star_systems, planets
     })
     }
-}, 100/1000)
+}, 1000/100)
 
