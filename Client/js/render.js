@@ -2,6 +2,7 @@ var gameField = document.getElementById("ctx");
 var planetDiv = document.getElementById("planetDiv");
 var ctx = document.getElementById("ctx").getContext("2d");
 var closePlanetsButton = document.getElementById("close-planets");
+var generateGalaxyButton = document.getElementById("generate-galaxy");
 var socket = io();
 
 var img = {};
@@ -53,6 +54,7 @@ socket.on('render_map', function(data){
 closePlanetsButton.onclick = function(){
     render_mode = "map";
     closePlanetsButton.style.display = 'none';
+    generateGalaxyButton.style.display = 'inline-block';
 }
 
 socket.on('get_star_name', function(data){
@@ -69,6 +71,7 @@ socket.on('get_star_name', function(data){
             if ((cx <= star_x + 20 && cx >= star_x - 20) && (cy <= star_y + 20 && cy >= star_y -20)){
                 
                 render_mode = "star_system";
+                generateGalaxyButton.style.display = 'none';
                 closePlanetsButton.style.display = 'inline-block';
                 system_to_render = star_id
             }
