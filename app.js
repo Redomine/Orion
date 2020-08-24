@@ -23,7 +23,6 @@ let stars = "SELECT * FROM stars";
 let stars_querry = con.query(stars, (err, results) => {
     if(err) throw err;
     for (i in results) {
-        
         star_systems[i] = [results[i].Star_id, 
         results[i].Star_name, 
         results[i].Star_type,
@@ -74,17 +73,17 @@ io.sockets.on('connection', function(socket){
         star_systems
     });
 
+    socket.on('new_game',function(data){
+        console.log(data.star_name)});    
 });
-
-
 
 setInterval(function() {
     for(var i in SOCKET_LIST){
-      var socket = SOCKET_LIST[i]
+        var socket = SOCKET_LIST[i]
+        socket.emit('render_map', {
+            star_systems, planets})
 
-      socket.emit('render_map', {
-        star_systems, planets
-    })
-    }
-}, 1000/100)
+        }
+
+})
 

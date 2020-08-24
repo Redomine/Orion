@@ -1,5 +1,6 @@
 var generateGalaxyButton = document.getElementById("generate-galaxy");
 
+
 function create_star_name(){
     var letter = ["A", "B", "C", "D", "E", "F", "G",
     "H", "I", "J", "K", "L", "M", "N", "O",
@@ -38,8 +39,10 @@ function choose_star_size(){
 }
 
 generateGalaxyButton.onclick = function(){
-    console.log(create_star_name());
-    console.log(choose_star_type());
-    console.log(choose_star_coordinats());
-    console.log(choose_star_size());
+    socket.emit('new_game',{
+        star_name:(create_star_name()),
+        star_type:(choose_star_type()),
+        star_coordinats:(choose_star_coordinats()),
+        star_size:(choose_star_size())
+    });
 }
