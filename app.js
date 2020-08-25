@@ -63,6 +63,8 @@ console.log("Server started.");
 var SOCKET_LIST = {};
 
 var io = require('socket.io')(serv,{});
+let truncate_table = "TRUNCATE TABLE stars";
+const sql = "INSERT INTO stars(`Star_name`, `Star_type`, `Star_x`, `Star_y`, `Star_size`) VALUES(?, ?, ?, ?, ?)";
 
 io.sockets.on('connection', function(socket){
     console.log('socket connected');
@@ -73,8 +75,35 @@ io.sockets.on('connection', function(socket){
         star_systems
     });
 
+    socket.on('clear_galaxy',function(){
+        con.query(truncate_table, function(err, results) {
+            if(err) console.log(err);
+            else console.log("Data deleted")});
+    });
+
     socket.on('new_game',function(data){
-        console.log(data.star_name)});    
+
+        new_star = []
+        new_star[0] = data.star_name
+        new_star[1] = data.star_type
+        new_star[2] = data.star_coordinats[0]
+        new_star[3] = data.star_coordinats[1]
+        new_star[4] = data.star_size
+        console.log(new_star);
+        
+
+        con.query(sql, new_star, function(err, results) {
+            if(err) console.log(err);
+            else console.log("Data appended")});
+
+        });
+
+
+        //con.query(sql, new_star, function(err, results) {
+        //    if(err) console.log(err);
+        //    else console.log("Data appended")});
+        //});
+
 });
 
 setInterval(function() {

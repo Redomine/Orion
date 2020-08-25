@@ -39,10 +39,16 @@ function choose_star_size(){
 }
 
 generateGalaxyButton.onclick = function(){
-    socket.emit('new_game',{
-        star_name:(create_star_name()),
-        star_type:(choose_star_type()),
-        star_coordinats:(choose_star_coordinats()),
-        star_size:(choose_star_size())
-    });
+    let count = 0;
+    socket.emit('clear_galaxy');
+    while (count < 21) {
+        socket.emit('new_game',{
+            star_name:(create_star_name()),
+            star_type:(choose_star_type()),
+            star_coordinats:(choose_star_coordinats()),
+            star_size:(choose_star_size())
+        
+        });
+        count++;
+    }
 }
