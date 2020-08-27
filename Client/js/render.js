@@ -3,6 +3,7 @@ var planetDiv = document.getElementById("planetDiv");
 var ctx = document.getElementById("ctx").getContext("2d");
 var closePlanetsButton = document.getElementById("close-planets");
 var generateGalaxyButton = document.getElementById("generate-galaxy");
+var turnButton = document.getElementById("turn-button");
 var socket = io();
 
 var img = {};
@@ -12,6 +13,8 @@ img.space.src = '/img/space.png';
 ctx.font = '12px Arial';
 ctx.fillStyle = "white";
 var render_mode = "map";
+
+
 socket.on('render_map', function(data){
     ctx.clearRect(0,0,800,800);
 

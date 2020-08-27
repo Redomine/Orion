@@ -110,6 +110,9 @@ io.sockets.on('connection', function(socket){
                     else console.log("Planet appended")});
                 }
         }
+
+        
+
         });
 
 
@@ -120,7 +123,7 @@ io.sockets.on('connection', function(socket){
 
 
 setInterval(function() {
-    console.log(1);
+
     for(var i in SOCKET_LIST){
         var socket = SOCKET_LIST[i]
         socket.emit('render_map', {
@@ -128,5 +131,5 @@ setInterval(function() {
 
         }
 
-})
+}, 100)
 
