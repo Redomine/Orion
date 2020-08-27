@@ -57,6 +57,27 @@ function choose_star_coordinats(){
     ;
 }
 
+function choose_planet_coordinats(data){
+    if (data == 1) {
+        var letter = [[500, 250], [500, 350], [450, 300], [550, 300]]
+    } 
+
+    if (data == 2) {
+        var letter = [[500, 200], [500, 400], [425, 300], [575, 300]]
+    }
+
+    if (data == 3) {
+        var letter = [[500, 150], [500, 450], [400, 300], [600, 300]]
+    }
+
+    if (data == 4) {
+        var letter = [[500, 100], [500, 500], [375, 300], [625, 300]]
+    }
+
+    return letter[Math.floor(Math.random()*(letter.length-1))]
+    ;
+}
+
 function choose_star_size(){
     var letter = ["15", "20", "25"]
     return letter[Math.floor(Math.random()*(letter.length-1))]
@@ -83,11 +104,14 @@ generateGalaxyButton.onclick = function(){
                 let new_planet_size = choose_planet_size()
                 let new_planet_rich = choose_planet_rich()
                 let new_planet_gravity = choose_planet_gravity()
-                let new_planet_x = 100
-                let new_planet_y = 100
-                new_planet_system[count] = [planet_star_id, 
+                let new_planet_coorinats = choose_planet_coordinats(planet_count)
+
+                let new_planet_x = new_planet_coorinats[0]
+                let new_planet_y = new_planet_coorinats[1]
+                new_planet_system[count] = [ 
                 new_star_name + '-' + planet_count, 
                 new_planet_type, 
+                planet_star_id,
                 new_planet_size, 
                 new_planet_rich, 
                 new_planet_gravity,
@@ -98,12 +122,12 @@ generateGalaxyButton.onclick = function(){
             planet_count++;
             count++;
         }
-        console.log(new_planet_system);
         socket.emit('new_game',{
             star_name:(new_star_name),
             star_type:(new_star_type),
             star_coordinats:(new_star_coorinats),
             star_size:(new_star_size),
+            planet_system:(new_planet_system)
         });
 
         star_id++;

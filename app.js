@@ -63,8 +63,10 @@ console.log("Server started.");
 var SOCKET_LIST = {};
 
 var io = require('socket.io')(serv,{});
-let truncate_table = "TRUNCATE TABLE stars";
-const sql = "INSERT INTO stars(`Star_name`, `Star_type`, `Star_x`, `Star_y`, `Star_size`) VALUES(?, ?, ?, ?, ?)";
+let truncate_table_stars = "TRUNCATE TABLE stars";
+let truncate_table_planets = "TRUNCATE TABLE planets";
+const sql_stars = "INSERT INTO stars(`Star_name`, `Star_type`, `Star_x`, `Star_y`, `Star_size`) VALUES(?, ?, ?, ?, ?)";
+const sql_planets = "INSERT INTO planets(`Planet_name`, `Planet_type`, `Planet_star_id`, `Planet_size`, `Planet_rich`, `Planet_gravity`, `Planet_x`, `Planet_y`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
 
 io.sockets.on('connection', function(socket){
     console.log('socket connected');
@@ -76,7 +78,11 @@ io.sockets.on('connection', function(socket){
     });
 
     socket.on('clear_galaxy',function(){
-        con.query(truncate_table, function(err, results) {
+        con.query(truncate_table_stars, function(err, results) {
+            if(err) console.log(err);
+            else console.log("Data deleted")});
+        
+        con.query(truncate_table_planets, function(err, results) {
             if(err) console.log(err);
             else console.log("Data deleted")});
     });
@@ -89,24 +95,32 @@ io.sockets.on('connection', function(socket){
         new_star[2] = data.star_coordinats[0]
         new_star[3] = data.star_coordinats[1]
         new_star[4] = data.star_size
-        console.log(new_star);
         
 
-        con.query(sql, new_star, function(err, results) {
+        con.query(sql_stars, new_star, function(err, results) {
             if(err) console.log(err);
-            else console.log("Data appended")});
+            else console.log("Star appended")});
 
+        
+        if (data.planet_system != []) {
+            //console.log(data.planet_system);
+            for (planet in data.planet_system) {
+                con.query(sql_planets, data.planet_system[planet], function(err, results) {
+                    if(err) console.log(err);
+                    else console.log("Planet appended")});
+                }
+        }
         });
 
 
-        //con.query(sql, new_star, function(err, results) {
-        //    if(err) console.log(err);
-        //    else console.log("Data appended")});
-        //});
+        
 
 });
 
+
+
 setInterval(function() {
+    console.log(1);
     for(var i in SOCKET_LIST){
         var socket = SOCKET_LIST[i]
         socket.emit('render_map', {
