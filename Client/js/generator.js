@@ -59,22 +59,22 @@ function choose_star_coordinats(){
 
 function choose_planet_coordinats(data){
     if (data == 1) {
-        var letter = [[500, 250], [500, 350], [450, 300], [550, 300]]
+        var letter = [[500, 400], [500, 225], [400, 300], [600, 300]]
     } 
 
     if (data == 2) {
-        var letter = [[500, 200], [500, 400], [425, 300], [575, 300]]
+        var letter = [[500, 475], [500, 150], [350, 300], [675, 300]]
     }
 
     if (data == 3) {
-        var letter = [[500, 150], [500, 450], [400, 300], [600, 300]]
+        var letter = [[500, 600], [500, 100], [300, 300], [750, 300]]
     }
 
     if (data == 4) {
-        var letter = [[500, 100], [500, 500], [375, 300], [625, 300]]
+        var letter = [[250, 300], [825, 300]]
     }
 
-    return letter[Math.floor(Math.random()*(letter.length-1))]
+    return letter[Math.floor(Math.random()*(letter.length))]
     ;
 }
 
@@ -93,7 +93,7 @@ generateGalaxyButton.onclick = function(){
         let new_star_coorinats = choose_star_coordinats()
         let new_star_size = choose_star_size()
 
-        let planet_star_id = star_id
+        let planet_star_id = star_id + 1
         let number_of_planets = (Math.floor(Math.random() * (5 - 0)) + 0)
         let count = 0
         let planet_count = 1

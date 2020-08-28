@@ -47,6 +47,7 @@ let planets_querry = con.query(planets_data, (err, results) => {
         results[i].Planet_gravity,
         results[i].Planet_x,
         results[i].Planet_y,
+        results[i].Planet_ruler,
         ];
     }
 })
@@ -131,5 +132,5 @@ setInterval(function() {
 
         }
 
-}, 100)
+}, 200)
 
