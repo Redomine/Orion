@@ -15,6 +15,12 @@ ctx.fillStyle = "white";
 var render_mode = "map";
 
 
+
+
+
+
+
+
 socket.on('render_map', function(data){
     ctx.clearRect(0,0,1200,700);
 
@@ -42,25 +48,33 @@ socket.on('render_map', function(data){
                 img.star.src = '/img' + '/close_stars' + data.star_systems[i][2];	
                 ctx.drawImage(img.star,500,300);
             }
+        planet_count = 0
         for (i in data.planets) {
+            
             if (data.planets[i][3] === system_to_render) {
+                planet_count++
                 img.planet = new Image();
                 img.planet.src = '/img' + '/planets' + data.planets[i][2];
                 planet_x = data.planets[i][7]
                 planet_y = data.planets[i][8]
-                
+                planet_name = data.planets[i][1]
+                planet_rich = data.planets[i][4]
+                planet_ruler = data.planets[i][6]
                 radius = Math.sqrt((500 - planet_x)*(500 - planet_x) + (300 - planet_y)*(300 - planet_y))
-                console.log(radius);
                 ctx.strokeStyle = "white";
                 ctx.lineWidth = 1;
+                //ctx.beginPath();
+                //ctx.arc(535,335,radius,0, Math.PI*2,true);
+                //ctx.stroke();
+
                 ctx.beginPath();
-                ctx.arc(535,335,radius,0, Math.PI*2,true);
+
+                ctx.ellipse(535, 335, 100*planet_count*0.65, 100*planet_count*1.1, Math.PI / 2, 0, 2 * Math.PI);
                 ctx.stroke();
 
-                ctx.drawImage(img.planet, planet_x + 8, planet_y + 7)
+                ctx.drawImage(img.planet, planet_x-35, planet_y-35)
                 
-                ctx.fillText(planet_x, planet_x - 50, planet_y -50);
-                ctx.fillText(planet_y, planet_x - 50, planet_y -25);
+                ctx.fillText(planet_name, planet_x - 40, planet_y+30);
             }
         }
 
@@ -82,6 +96,8 @@ socket.on('get_star_name', function(data){
     function onDown(event) {
         cx = event.pageX;
         cy = event.pageY;
+        console.log(cx);
+        console.log(cy);
         for (i in data.star_systems){
             star_x = data.star_systems[i][3]
             star_y = data.star_systems[i][4]
@@ -95,7 +111,6 @@ socket.on('get_star_name', function(data){
                     generateGalaxyButton.style.display = 'none';
                     closePlanetsButton.style.display = 'inline-block';
                     system_to_render = star_id
-                    console.log(star_id);
                 }
             }
         }
