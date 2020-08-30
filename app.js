@@ -104,7 +104,6 @@ io.sockets.on('connection', function(socket){
 
         
         if (data.planet_system != []) {
-            //console.log(data.planet_system);
             for (planet in data.planet_system) {
                 con.query(sql_planets, data.planet_system[planet], function(err, results) {
                     if(err) console.log(err);
@@ -116,8 +115,9 @@ io.sockets.on('connection', function(socket){
 
         });
 
-
-        
+    //socket.emit('render_map', {
+     //   star_systems, planets})
+     
 
 });
 

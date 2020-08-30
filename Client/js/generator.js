@@ -59,7 +59,7 @@ function choose_star_coordinats(){
 
 function choose_planet_coordinats(data){
     if (data == 1) {
-        var letter = [[550, 280], [620, 300], [650, 340], [610, 400], [550, 410], [450, 310], [470, 390], [430, 340]]
+        var letter = [[550, 280], [620, 300], [650, 340], [610, 400], [550, 410], [450, 310], [470, 390], [435, 340]]
     } 
 
     if (data == 2) {
