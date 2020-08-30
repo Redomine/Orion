@@ -115,22 +115,21 @@ io.sockets.on('connection', function(socket){
 
         });
 
-    //socket.emit('render_map', {
-     //   star_systems, planets})
+    socket.emit('render_map', {
+        star_systems, planets})
      
 
 });
 
 
 
-setInterval(function() {
-
-    for(var i in SOCKET_LIST){
-        var socket = SOCKET_LIST[i]
-        socket.emit('render_map', {
-            star_systems, planets})
-
-        }
-
-}, 200)
+//setInterval(function() {
+//
+//    for(var i in SOCKET_LIST){
+//        var socket = SOCKET_LIST[i]
+//        socket.emit('render_map', {
+//            star_systems, planets})
+//        }
+//
+//}, 200)
 

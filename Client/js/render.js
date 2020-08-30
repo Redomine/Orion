@@ -20,7 +20,6 @@ var render_mode = "map";
 
 
 function draw(data){
-    
     if (render_mode === "map") {
         for (i in data.star_systems) {
             img.star = new Image();
@@ -63,14 +62,17 @@ function draw(data){
         }
         }
     }
-    
 }
 
 socket.on('render_map', function(data){
-    buffer_ctx.drawImage(img.space,0,0);
-    draw(data);
-    ctx.drawImage(buffer_canvas,0,0)
+    setInterval(function() {
+        buffer_ctx.drawImage(img.space,0,0);
+        draw(data);
+        ctx.drawImage(buffer_canvas,0,0)
+    }, 200)
 })
+
+
 
 
 closePlanetsButton.onclick = function(){
@@ -104,4 +106,3 @@ socket.on('get_star_name', function(data){
         }
     }
 });
-
