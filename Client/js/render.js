@@ -15,70 +15,77 @@ img.space = new Image();
 img.space.src = '/img/space.png';
 
 buffer_ctx.font = '12px Arial';
-buffer_ctx.fillStyle = "white";
+ctx.fillStyle = "white";
 var render_mode = "map";
 
+function loadImage(url) {
+    return new  Promise(resolve => {
+        const image = new Image();
+        image.addEventListener('load', () => {
+            resolve(image);
+        });
+        image.src = url; 
+    });
+}
 
-function draw(data){
+async function draw(data){
+    
+
     if (render_mode === "map") {
         for (i in data.star_systems) {
-            img.star = new Image();
-            img.star.src = '/img' + '/stars' + data.star_systems[i][2];	
             star_size = data.star_systems[i][5];
             star_x = data.star_systems[i][3];
             star_y = data.star_systems[i][4];
             star_name = data.star_systems[i][1];
-            buffer_ctx.drawImage(img.star,star_x - star_size,star_y - star_size, star_size, star_size);	
-            buffer_ctx.fillText(star_name, star_x - star_size,star_y+30 - star_size);
+            await loadImage('/img' + '/stars' + data.star_systems[i][2]).then(image=>{
+                ctx.drawImage(image,star_x - star_size,star_y - star_size, star_size, star_size)})
+            ctx.fillText(star_name, star_x - star_size,star_y+30 - star_size);	
         }
     }
     if (render_mode === "star_system") {
         for (i in data.star_systems) {
             if (data.star_systems[i][0] === system_to_render) {
-                img.star = new Image();
-                img.star.src = '/img' + '/close_stars' + data.star_systems[i][2];	
-                buffer_ctx.drawImage(img.star,500,300);
+                await loadImage('/img' + '/close_stars' + data.star_systems[i][2]).then(image=>{
+                    ctx.drawImage(image,500, 300)})
             }
         planet_count = 0
         for (i in data.planets) {
             if (data.planets[i][3] === system_to_render) {
                 planet_count++
-                img.planet = new Image();
-                img.planet.src = '/img' + '/planets' + data.planets[i][2];
                 planet_x = data.planets[i][7]
                 planet_y = data.planets[i][8]
                 planet_name = data.planets[i][1]
                 planet_rich = data.planets[i][4]
                 planet_ruler = data.planets[i][6]
                 radius = Math.sqrt((500 - planet_x)*(500 - planet_x) + (300 - planet_y)*(300 - planet_y))
-                buffer_ctx.strokeStyle = "white";
-                buffer_ctx.lineWidth = 1;
-                buffer_ctx.beginPath();
-                buffer_ctx.ellipse(535, 335, 100*planet_count*0.65, 100*planet_count*1.1, Math.PI / 2, 0, 2 * Math.PI);
-                buffer_ctx.stroke();
-                buffer_ctx.drawImage(img.planet, planet_x-35, planet_y-35)
-                buffer_ctx.fillText(planet_name, planet_x - 40, planet_y+30);
+                ctx.strokeStyle = "white";
+                ctx.lineWidth = 1;
+
+                await loadImage('/img' + '/planets' + data.planets[i][2]).then(image=>{
+                    ctx.beginPath();
+                    ctx.ellipse(535, 335, 100*planet_count*0.65, 100*planet_count*1.1, Math.PI / 2, 0, 2 * Math.PI);
+                    ctx.stroke();
+                    ctx.drawImage(image,planet_x-35, planet_y-35)})
+                ctx.fillText(planet_name, planet_x - 40, planet_y+30);
             }
         }
         }
     }
 }
-
 socket.on('render_map', function(data){
+    ctx.drawImage(img.space,0,0);
     setInterval(function() {
-        buffer_ctx.drawImage(img.space,0,0);
+        //ctx.drawImage(img.space,0,0);
         draw(data);
-        ctx.drawImage(buffer_canvas,0,0)
+
     }, 200)
 })
-
-
-
 
 closePlanetsButton.onclick = function(){
     render_mode = "map";
     closePlanetsButton.style.display = 'none';
     generateGalaxyButton.style.display = 'inline-block';
+    ctx.drawImage(img.space,0,0);
 }
 
 socket.on('get_star_name', function(data){
@@ -101,6 +108,7 @@ socket.on('get_star_name', function(data){
                     generateGalaxyButton.style.display = 'none';
                     closePlanetsButton.style.display = 'inline-block';
                     system_to_render = star_id
+                    ctx.drawImage(img.space,0,0);
                 }
             }
         }
